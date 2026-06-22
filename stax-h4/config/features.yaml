@@ -1,0 +1,35 @@
+# Feature set per symbol. P1 uses a fixed starter set on EURUSD;
+# tournament.py (P2+) will overwrite this list per symbol once enough
+# walk-forward history exists to run feature selection honestly.
+
+EURUSD:
+  tournament_run: false
+  features:
+    # Trend (M15, H1)
+    - ema_slope_m15
+    - ema_slope_h1
+    - adx_m15
+    - adx_h1
+    - linreg_slope_h1
+    # Momentum (M5, M15)
+    - rsi_m15
+    - stoch_k_m15
+    - macd_hist_m15
+    - roc_m15
+    # Volatility (M15, H1)
+    - atr_ratio_m15
+    - bb_width_m15
+    - realized_vol_h1
+    # Volume (M5, M15)
+    - obv_slope_m15
+    - mfi_m15
+    - volume_z_m15
+    # Partial-H4 state (see stax/features/partial_h4.py)
+    - pos_in_h4
+    - h4_body_atr
+    - h4_range_atr
+    - h4_close_loc
+    - h4_dir_sofar
+    - h4_upper_wick
+    - h4_lower_wick
+    - m15_momentum

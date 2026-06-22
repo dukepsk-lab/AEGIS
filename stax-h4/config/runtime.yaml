@@ -1,0 +1,17 @@
+# STAX-H4 runtime config — broker: IUX
+mt5:
+  login: 0          # fill in: IUX account number
+  password: ""       # fill in (better: set via env var MT5_PASSWORD)
+  server: ""         # fill in: IUX server name, e.g. "IUX-Demo" / "IUX-Live"
+  path: ""           # optional: full path to terminal64.exe if not default install
+
+magic: 574001         # unique EA magic number for STAX-H4 orders
+
+loop:
+  poll_interval_s: 5
+  mode: paper          # paper | live
+
+phase: P1               # current implementation phase (see architecture doc §14)
+
+symbols:
+  - EURUSD               # P1 baseline only — IUX has no symbol suffix

@@ -1,0 +1,81 @@
+# Per-symbol config — broker: IUX (no symbol suffix, e.g. "EURUSD" not "EURUSD.r")
+# P1 scope = EURUSD only (active: true). Others are pinned defaults from the
+# architecture doc §11, kept disabled until P4 multi-symbol expansion.
+
+EURUSD:
+  active: true
+  class: fx_major
+  max_spread_pts: 15          # ~1.0 pip cap at 0.1pt/point on 5-digit quotes — recalibrate from live IUX quotes
+  max_slippage_pts: 10
+  max_tick_age_s: 30
+  catastrophe_sl_atr: null     # off by default per doc; set e.g. 3.0 to enable
+  max_risk_per_trade: 0.005    # 0.5% equity
+  min_edge: 0.05               # |p_up - 0.5| gate, tune during P1 walk-forward
+  min_ev: 0.0                  # ATR units, tune during P1 walk-forward
+  filling: 1                   # mt5.ORDER_FILLING_IOC — verify against IUX symbol_info().filling_mode
+  sessions: [london, newyork]
+
+GBPUSD:
+  active: false
+  class: fx_major
+  max_spread_pts: 20
+  max_slippage_pts: 10
+  max_tick_age_s: 30
+  catastrophe_sl_atr: null
+  max_risk_per_trade: 0.005
+  min_edge: 0.05
+  min_ev: 0.0
+  filling: 1
+  sessions: [london, newyork]
+
+USDJPY:
+  active: false
+  class: fx_major
+  max_spread_pts: 20
+  max_slippage_pts: 10
+  max_tick_age_s: 30
+  catastrophe_sl_atr: null
+  max_risk_per_trade: 0.005
+  min_edge: 0.05
+  min_ev: 0.0
+  filling: 1
+  sessions: [asian, newyork]
+
+XAUUSD:
+  active: false
+  class: metal
+  max_spread_pts: 350
+  max_slippage_pts: 50
+  max_tick_age_s: 30
+  catastrophe_sl_atr: 2.5
+  max_risk_per_trade: 0.004
+  min_edge: 0.05
+  min_ev: 0.0
+  filling: 1
+  sessions: [london, newyork]
+
+US30:
+  active: false
+  class: index
+  max_spread_pts: 50
+  max_slippage_pts: 50
+  max_tick_age_s: 30
+  catastrophe_sl_atr: 2.5
+  max_risk_per_trade: 0.004
+  min_edge: 0.05
+  min_ev: 0.0
+  filling: 1
+  sessions: [newyork_cash]
+
+BTCUSD:
+  active: false
+  class: crypto
+  max_spread_pts: 5000
+  max_slippage_pts: 200
+  max_tick_age_s: 60
+  catastrophe_sl_atr: 2.0
+  max_risk_per_trade: 0.003
+  min_edge: 0.05
+  min_ev: 0.0
+  filling: 1
+  sessions: [always]
