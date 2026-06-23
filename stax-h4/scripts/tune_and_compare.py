@@ -45,8 +45,17 @@ from stax.models.base_lgbm import LGBMBasePredictor
 
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
-SYMBOL = "EURUSD"
-COST = CostParams(spread_pts=10, point=0.00001, slippage_pts=5)
+# Cost approximations per symbol (real values should come from
+# mt5.symbol_info() once on the live IUX terminal). FX majors are quoted
+# in 5-decimal pips; XAUUSD in 2-decimal cents, hence the very different
+# point size and point count below.
+COST_BY_SYMBOL = {
+    "EURUSD": CostParams(spread_pts=10, point=0.00001, slippage_pts=5),
+    "XAUUSD": CostParams(spread_pts=175, point=0.01, slippage_pts=25),
+}
+
+SYMBOL = sys.argv[1] if len(sys.argv) > 1 else "EURUSD"
+COST = COST_BY_SYMBOL[SYMBOL]
 TUNE_FRACTION = 0.7
 N_TRIALS = 40
 TUNE_WF = WFConfig(train_bars=800, test_bars=150, embargo_bars=16)  # used inside the tune slice for HPO scoring

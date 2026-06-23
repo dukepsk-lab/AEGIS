@@ -48,7 +48,7 @@ XAUUSD:
   max_tick_age_s: 30
   catastrophe_sl_atr: 2.5
   max_risk_per_trade: 0.004
-  min_edge: 0.05
+  min_edge: 0.0889
   min_ev: 0.0
   filling: 1
   sessions:

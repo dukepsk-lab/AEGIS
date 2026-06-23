@@ -18,9 +18,11 @@ import pandas as pd
 from stax.data.timeframes import TF_SECONDS
 
 # Public mirrors of the same dataset (10y EURUSD/XAUUSD/... at m15/m30/h1/h4/d1).
-# Prices are stored scaled by PRICE_SCALE (5-decimal pips as an integer).
+# Prices are stored scaled by an integer factor that varies per symbol:
+# 5-decimal FX pairs use 100,000; XAUUSD (2-decimal cents) uses 100.
 PUBLIC_CSV_BASE = "https://raw.githubusercontent.com/komo135/forex-historical-data/main"
 PRICE_SCALE = 100_000.0
+PRICE_SCALE_BY_SYMBOL = {"XAUUSD": 100.0}
 
 _TF_FILE_SUFFIX = {"M15": "m15", "H1": "h1", "H4": "h4"}
 
@@ -31,7 +33,9 @@ def public_csv_url(symbol: str, tf: str, base: str = PUBLIC_CSV_BASE) -> str:
 
 
 def load_public_csv(symbol: str, tf: str, base: str = PUBLIC_CSV_BASE,
-                     price_scale: float = PRICE_SCALE) -> pd.DataFrame:
+                     price_scale: float | None = None) -> pd.DataFrame:
+    if price_scale is None:
+        price_scale = PRICE_SCALE_BY_SYMBOL.get(symbol.upper(), PRICE_SCALE)
     url = public_csv_url(symbol, tf, base)
     raw = pd.read_csv(url)
     return _to_mt5_schema(raw, tf, price_scale)

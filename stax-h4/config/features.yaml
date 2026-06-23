@@ -24,3 +24,29 @@ EURUSD:
   - h4_upper_wick
   - h4_lower_wick
   - m15_momentum
+XAUUSD:
+  tournament_run: true
+  features:
+  - adx_m15
+  - linreg_slope_m15
+  - adx_h1
+  - macd_hist_m15
+  - rsi_h1
+  - macd_hist_h1
+  - bb_width_m15
+  - realized_vol_m15
+  - bb_width_h1
+  - mfi_m15
+  - obv_slope_h1
+  - mfi_h1
+  - dow_sin
+  - vol_regime
+  - candle_move_atr
+  - pos_in_h4
+  - h4_body_atr
+  - h4_range_atr
+  - h4_close_loc
+  - h4_dir_sofar
+  - h4_upper_wick
+  - h4_lower_wick
+  - m15_momentum

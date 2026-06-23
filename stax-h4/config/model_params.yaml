@@ -7,3 +7,12 @@ EURUSD:
   reg_lambda: 0.17559407143101155
   subsample: 0.7688761823135867
   colsample_bytree: 0.913936853233206
+XAUUSD:
+  num_leaves: 42
+  min_child_samples: 198
+  learning_rate: 0.041331696777180876
+  n_estimators: 462
+  reg_alpha: 0.12380052422210903
+  reg_lambda: 0.01589698328018707
+  subsample: 0.9583949754610516
+  colsample_bytree: 0.878000713682245
