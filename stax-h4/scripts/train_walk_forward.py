@@ -29,9 +29,12 @@ def main() -> None:
         symbol_cfg = yaml.safe_load(f)
     with open("config/features.yaml", encoding="utf-8") as f:
         feature_cfg = yaml.safe_load(f)
+    model_params_path = Path("config/model_params.yaml")
+    model_params_cfg = yaml.safe_load(model_params_path.read_text(encoding="utf-8")) if model_params_path.exists() else {}
 
     feature_cols = feature_cfg[SYMBOL]["features"]
     min_edge = symbol_cfg[SYMBOL]["min_edge"]
+    model_params = model_params_cfg.get(SYMBOL)
 
     mt5_cfg = MT5Config(**runtime_cfg["mt5"])
     connect(mt5_cfg)
@@ -58,7 +61,7 @@ def main() -> None:
     feat_table = feat_table.dropna(subset=feature_cols)
 
     wf_cfg = WFConfig(train_bars=600, test_bars=120, embargo_bars=16)  # ~100d/20d/2.7d at H4
-    result = walk_forward(feat_table, bars["H4"], feature_cols, wf_cfg, min_edge, cost)
+    result = walk_forward(feat_table, bars["H4"], feature_cols, wf_cfg, min_edge, cost, model_params)
 
     print("\n=== Per-fold metrics ===")
     for fm in result["folds"]:

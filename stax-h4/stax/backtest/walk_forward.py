@@ -79,7 +79,8 @@ def simulate_trades(p_up: np.ndarray, samples: pd.DataFrame, min_edge: float, co
 
 
 def walk_forward(feat_table: pd.DataFrame, h4_df: pd.DataFrame, feature_cols: list[str],
-                  wf_cfg: WFConfig, min_edge: float, cost: CostParams) -> dict:
+                  wf_cfg: WFConfig, min_edge: float, cost: CostParams,
+                  model_params: dict | None = None) -> dict:
     samples = build_h4_samples(feat_table, h4_df, feature_cols)
     splits = purged_walk_forward_splits(len(samples), wf_cfg)
     if not splits:
@@ -91,7 +92,7 @@ def walk_forward(feat_table: pd.DataFrame, h4_df: pd.DataFrame, feature_cols: li
         train_df = samples.iloc[tr]
         test_df = samples.iloc[te]
 
-        model = LGBMBasePredictor().fit(train_df[feature_cols], train_df["y"])
+        model = LGBMBasePredictor(model_params).fit(train_df[feature_cols], train_df["y"])
         p_up = model.predict_proba(test_df[feature_cols])
 
         trades = simulate_trades(p_up, test_df, min_edge, cost)
