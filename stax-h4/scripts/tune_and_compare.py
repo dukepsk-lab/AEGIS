@@ -55,6 +55,7 @@ COST_BY_SYMBOL = {
 }
 
 SYMBOL = sys.argv[1] if len(sys.argv) > 1 else "EURUSD"
+YEARS = float(sys.argv[2]) if len(sys.argv) > 2 else None  # e.g. 3 to test only the most recent 3 years
 COST = COST_BY_SYMBOL[SYMBOL]
 TUNE_FRACTION = 0.7
 N_TRIALS = 40
@@ -120,8 +121,9 @@ def main() -> None:
     baseline_features = feature_cfg[SYMBOL]["features"]
     baseline_min_edge = symbol_cfg[SYMBOL]["min_edge"]
 
-    print(f"Downloading {SYMBOL} M15/H1/H4 from public CSV mirror...")
-    bars = load_bars_for_symbol(SYMBOL, ["M15", "H1", "H4"])
+    print(f"Downloading {SYMBOL} M15/H1/H4 from public CSV mirror..."
+          + (f" (last {YEARS}y only)" if YEARS else ""))
+    bars = load_bars_for_symbol(SYMBOL, ["M15", "H1", "H4"], years=YEARS)
     feat_table = build_feature_table(SYMBOL, bars)
 
     all_cols = all_numeric_feature_cols(feat_table)

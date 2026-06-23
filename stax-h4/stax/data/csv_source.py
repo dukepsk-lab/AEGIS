@@ -69,5 +69,14 @@ def _to_mt5_schema(raw: pd.DataFrame, tf: str, price_scale: float) -> pd.DataFra
 
 
 def load_bars_for_symbol(symbol: str, timeframes: list[str] = ("M15", "H1", "H4"),
-                          base: str = PUBLIC_CSV_BASE) -> dict[str, pd.DataFrame]:
-    return {tf: load_public_csv(symbol, tf, base) for tf in timeframes}
+                          base: str = PUBLIC_CSV_BASE, years: float | None = None) -> dict[str, pd.DataFrame]:
+    """years: if set, keep only the most recent N years of each timeframe
+    (based on that timeframe's own last bar) — useful for testing whether
+    a shorter, more-recent slice generalizes better than the full history,
+    without re-downloading anything."""
+    bars = {tf: load_public_csv(symbol, tf, base) for tf in timeframes}
+    if years is not None:
+        for tf, df in bars.items():
+            cutoff = df["time"].max() - years * 365.25 * 86400
+            bars[tf] = df[df["time"] >= cutoff].reset_index(drop=True)
+    return bars

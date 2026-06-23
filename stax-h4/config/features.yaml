@@ -27,17 +27,17 @@ EURUSD:
 XAUUSD:
   tournament_run: true
   features:
+  - ema_slope_m15
   - adx_m15
   - linreg_slope_m15
-  - adx_h1
-  - macd_hist_m15
-  - rsi_h1
+  - roc_m15
   - macd_hist_h1
+  - roc_h1
   - bb_width_m15
   - realized_vol_m15
-  - bb_width_h1
+  - realized_vol_h1
   - mfi_m15
-  - obv_slope_h1
+  - volume_z_m15
   - mfi_h1
   - dow_sin
   - vol_regime
