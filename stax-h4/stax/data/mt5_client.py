@@ -11,14 +11,14 @@ from dataclasses import dataclass
 import MetaTrader5 as mt5
 import yaml
 
+from stax.data.timeframes import TF_SECONDS
+
 TIMEFRAME = {
     "M5": mt5.TIMEFRAME_M5,
     "M15": mt5.TIMEFRAME_M15,
     "H1": mt5.TIMEFRAME_H1,
     "H4": mt5.TIMEFRAME_H4,
 }
-
-TF_SECONDS = {"M5": 300, "M15": 900, "H1": 3600, "H4": 14400}
 
 
 @dataclass
