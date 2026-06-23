@@ -13,6 +13,9 @@ EURUSD:
   - obv_slope_m15
   - mfi_h1
   - volume_z_h1
+  - dow_sin
+  - vol_regime
+  - candle_move_atr
   - pos_in_h4
   - h4_body_atr
   - h4_range_atr

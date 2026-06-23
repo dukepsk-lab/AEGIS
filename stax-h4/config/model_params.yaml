@@ -1,14 +1,9 @@
-# Tuned Model 1 (LightGBM) hyperparameters per symbol, from
-# scripts/tune_and_compare.py — Optuna search scored on forward-chaining
-# folds within a train-only slice, never touching the holdout used to
-# validate the result. Overwrite via the same script after a re-run.
-
 EURUSD:
-  num_leaves: 42
-  min_child_samples: 136
-  learning_rate: 0.017516905938805907
-  n_estimators: 213
-  reg_alpha: 0.0025289466227759695
-  reg_lambda: 0.520153685293289
-  subsample: 0.7773353031113498
-  colsample_bytree: 0.6231373996226061
+  num_leaves: 48
+  min_child_samples: 116
+  learning_rate: 0.013939512144118496
+  n_estimators: 164
+  reg_alpha: 0.0014030234212783312
+  reg_lambda: 0.17559407143101155
+  subsample: 0.7688761823135867
+  colsample_bytree: 0.913936853233206

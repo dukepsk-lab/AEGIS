@@ -61,8 +61,38 @@ def build_feature_table(
     ).set_index("index")["atr_ref"]
 
     partial_df = _vectorized_partial_h4(m15, bars["H4"]["time"].values, atr_ref_series)
-    feats = pd.concat([feats, partial_df], axis=1)
+    context_df = _build_context_features(m15, atr_ref_series)
+    feats = pd.concat([feats, partial_df, context_df], axis=1)
     return feats
+
+
+def _build_context_features(m15: pd.DataFrame, atr_ref_series: pd.Series, eps: float = 1e-9) -> pd.DataFrame:
+    """Doc §7.1 context features, all derived from each closed M15 bar's
+    own UTC close_time / OHLC — no peeking at any other timeframe beyond
+    what's already as-of merged in atr_ref_series. Session hours are UTC
+    approximations (no DST split): Asian 00-08, London 08-16, New York
+    13-21 (overlap with London 13-16 is intentional and real)."""
+    dt = pd.to_datetime(m15["close_time"], unit="s", utc=True)
+    hour = dt.dt.hour
+    dow = dt.dt.dayofweek
+
+    atr_ref = atr_ref_series.reindex(m15.index).fillna(1e-6)
+    atr_ref = atr_ref.where(atr_ref != 0, 1e-6)
+    candle_move_atr = (m15["close"] - m15["open"]) / (atr_ref + eps)
+
+    realized_vol = m15["close"].pct_change().rolling(96, min_periods=20).std()
+    vol_regime = realized_vol.rolling(960, min_periods=96).rank(pct=True)
+
+    out = pd.DataFrame({
+        "sess_asian": ((hour >= 0) & (hour < 8)).astype(float),
+        "sess_london": ((hour >= 8) & (hour < 16)).astype(float),
+        "sess_newyork": ((hour >= 13) & (hour < 21)).astype(float),
+        "dow_sin": np.sin(2 * np.pi * dow / 7.0),
+        "dow_cos": np.cos(2 * np.pi * dow / 7.0),
+        "vol_regime": vol_regime,
+        "candle_move_atr": candle_move_atr,
+    }, index=m15.index).fillna(0.0)
+    return out
 
 
 def _vectorized_partial_h4(m15: pd.DataFrame, h4_open_times: np.ndarray, atr_ref_series: pd.Series,

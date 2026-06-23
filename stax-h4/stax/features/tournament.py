@@ -23,6 +23,7 @@ GROUP_PREFIXES = {
     "momentum": ("rsi_", "stoch_k_", "macd_hist_", "roc_"),
     "volatility": ("atr_ratio_", "bb_width_", "realized_vol_"),
     "volume": ("obv_slope_", "mfi_", "volume_z_"),
+    "context": ("sess_", "dow_", "vol_regime", "candle_move_atr"),
 }
 
 PARTIAL_H4_COLS = [

@@ -6,7 +6,7 @@ EURUSD:
   max_tick_age_s: 30
   catastrophe_sl_atr: null
   max_risk_per_trade: 0.005
-  min_edge: 0.1451
+  min_edge: 0.1227
   min_ev: 0.0
   filling: 1
   sessions:
